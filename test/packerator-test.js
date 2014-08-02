@@ -1,12 +1,25 @@
 /*global describe, it, beforeEach */
 /*jshint expr:true */
 
+var fs = require('fs');
+
 var expect = require('chai').expect
   , packerator = require('../');
 
+var testFile = __dirname + '/fixtures/foo.html'
+  , testHtml = fs.readFileSync(testFile).toString();
+
 describe('packerator', function() {
 
-  it('should not generate an error', function() {
+  it('should not generate an error', function(done) {
+    packerator(testHtml, function(err, html) {
+      expect(err).to.not.be.ok;
+      expect(html).to.be.ok;
+      done();
+    });
+  });
+
+  it('should have a streaming interface', function() {
     expect(false).to.be.ok;
   });
   
@@ -39,10 +52,6 @@ describe('packerator', function() {
   });
 
   it('should datauri-ify images in inline styles', function() {
-    expect(false).to.be.ok;
-  });
-
-  it('should have a streaming interface', function() {
     expect(false).to.be.ok;
   });
 
