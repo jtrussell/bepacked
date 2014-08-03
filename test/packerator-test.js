@@ -1,7 +1,10 @@
 /*global describe, it, beforeEach */
 /*jshint expr:true */
 
-var fs = require('fs');
+'use strict';
+
+var fs = require('fs')
+  , cheerio = require('cheerio');
 
 var expect = require('chai').expect
   , packerator = require('../');
@@ -11,47 +14,56 @@ var testFile = __dirname + '/fixtures/foo.html'
 
 describe('packerator', function() {
 
-  it('should not generate an error', function(done) {
-    packerator(testHtml, function(err, html) {
-      expect(err).to.not.be.ok;
-      expect(html).to.be.ok;
+  var $, err, packedHtml;
+
+  beforeEach(function(done) {
+    packerator(testHtml, {cwd: __dirname + '/fixtures'}, function(e, html) {
+      err = e;
+      packedHtml = html;
+      $ = cheerio.load(html);
       done();
     });
   });
 
-  it('should have a streaming interface', function() {
-    expect(false).to.be.ok;
+  it('should not generate an error', function() {
+    expect(err).to.not.be.ok;
+    expect(packedHtml).to.be.ok;
   });
   
-  it('should inline local JavaScript sources', function() {
+  it.skip('should inline local JavaScript sources', function() {
+    expect($('#script-local').html()
+      .trim()).to.equal('var bar = \'blargus\';');
+  });
+
+  it.skip('should inline external JavaScript sources', function() {
     expect(false).to.be.ok;
   });
 
-  it('should inline external JavaScript sources', function() {
+  it.skip('should inline local stylesheets', function() {
     expect(false).to.be.ok;
   });
 
-  it('should inline local stylesheets', function() {
+  it.skip('should inline external stylesheets', function() {
     expect(false).to.be.ok;
   });
 
-  it('should inline external stylesheets', function() {
+  it.skip('should datauri-ify local images', function() {
     expect(false).to.be.ok;
   });
 
-  it('should datauri-ify local images', function() {
+  it.skip('should datauri-ify external images', function() {
     expect(false).to.be.ok;
   });
 
-  it('should datauri-ify external images', function() {
+  it.skip('should datauri-ify images in stylesheets', function() {
     expect(false).to.be.ok;
   });
 
-  it('should datauri-ify images in stylesheets', function() {
+  it.skip('should datauri-ify images in inline styles', function() {
     expect(false).to.be.ok;
   });
 
-  it('should datauri-ify images in inline styles', function() {
+  it.skip('should have a streaming interface', function() {
     expect(false).to.be.ok;
   });
 
