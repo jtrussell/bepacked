@@ -10,7 +10,9 @@ var expect = require('chai').expect
   , packerator = require('../');
 
 var testFile = __dirname + '/fixtures/foo.html'
-  , testHtml = fs.readFileSync(testFile).toString();
+  , testHtml = fs.readFileSync(testFile).toString()
+  , barjs = fs.readFileSync(__dirname + '/fixtures/bar.js').toString().trim()
+  , barcss = fs.readFileSync(__dirname + '/fixtures/bar.css').toString().trim();
 
 describe('packerator', function() {
 
@@ -35,17 +37,25 @@ describe('packerator', function() {
   });
   
   it('should inline local JavaScript sources', function() {
-    var actual = $('#script-local').html().trim()
-      , expected = 'var bar = \'blargus\';';
-    expect(actual).to.equal(expected);
+    var actual = $('#script-local').html().trim();
+    expect(actual).to.equal(barjs);
   });
 
   it.skip('should inline external JavaScript sources', function() {
     expect(false).to.be.ok;
   });
 
-  it.skip('should inline local stylesheets', function() {
-    expect(false).to.be.ok;
+  it('should inline local stylesheets', function() {
+    var actual = $('#style-local').html().trim();
+    expect(actual).to.equal(barcss);
+  });
+
+  it('should not leave href attributes on style tags', function() {
+    expect($('#style-local').attr('href')).to.not.be.ok;
+  });
+
+  it('should not leave rel attributes on style tags', function() {
+    expect($('#style-local').attr('rel')).to.not.be.ok;
   });
 
   it.skip('should inline external stylesheets', function() {
