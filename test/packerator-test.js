@@ -20,7 +20,7 @@ describe('packerator', function() {
     packerator(testHtml, {cwd: __dirname + '/fixtures'}, function(e, html) {
       err = e;
       packedHtml = html;
-      $ = cheerio.load(html);
+      $ = cheerio.load(packedHtml);
       done();
     });
   });
@@ -29,10 +29,15 @@ describe('packerator', function() {
     expect(err).to.not.be.ok;
     expect(packedHtml).to.be.ok;
   });
+
+  it('should remove src attributes from scripts', function() {
+    expect($('#script-local').attr('src')).to.not.be.ok;
+  });
   
-  it.skip('should inline local JavaScript sources', function() {
-    expect($('#script-local').html()
-      .trim()).to.equal('var bar = \'blargus\';');
+  it('should inline local JavaScript sources', function() {
+    var actual = $('#script-local').html().trim()
+      , expected = 'var bar = \'blargus\';';
+    expect(actual).to.equal(expected);
   });
 
   it.skip('should inline external JavaScript sources', function() {
@@ -64,6 +69,10 @@ describe('packerator', function() {
   });
 
   it.skip('should have a streaming interface', function() {
+    expect(false).to.be.ok;
+  });
+
+  it.skip('should not generte an error when there is nothing to do', function() {
     expect(false).to.be.ok;
   });
 
