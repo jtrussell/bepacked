@@ -35,13 +35,13 @@ describe('packerator', function() {
   it('should remove src attributes from scripts', function() {
     expect($('#script-local').attr('src')).to.not.be.ok;
   });
-  
+
   it('should inline local JavaScript sources', function() {
     var actual = $('#script-local').html().trim();
     expect(actual).to.equal(barjs);
   });
 
-  it.skip('should inline external JavaScript sources', function() {
+  it.skip('should inline remote JavaScript sources', function() {
     expect(false).to.be.ok;
   });
 
@@ -58,7 +58,7 @@ describe('packerator', function() {
     expect($('#style-local').attr('rel')).to.not.be.ok;
   });
 
-  it.skip('should inline external stylesheets', function() {
+  it.skip('should inline remote stylesheets', function() {
     expect(false).to.be.ok;
   });
 
@@ -66,7 +66,7 @@ describe('packerator', function() {
     expect(false).to.be.ok;
   });
 
-  it.skip('should datauri-ify external images', function() {
+  it.skip('should datauri-ify remote images', function() {
     expect(false).to.be.ok;
   });
 
