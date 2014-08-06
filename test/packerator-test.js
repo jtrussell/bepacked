@@ -7,12 +7,30 @@ var fs = require('fs')
   , cheerio = require('cheerio');
 
 var expect = require('chai').expect
+  , sinon = require('sinon')
   , packerator = require('../');
 
 var testFile = __dirname + '/fixtures/foo.html'
   , testHtml = fs.readFileSync(testFile).toString()
   , barjs = fs.readFileSync(__dirname + '/fixtures/bar.js').toString().trim()
   , barcss = fs.readFileSync(__dirname + '/fixtures/bar.css').toString().trim();
+
+var request = require('request');
+
+// I don't want to reach out to the internets so let's stub `request.get`
+sinon.stub(request, 'get', function(url, cb) {
+  var map = {
+    'http://rawgit.com/jtrussell/packerator/master/test/fixtures/bar.js': barjs,
+    'https://rawgit.com/jtrussell/packerator/master/test/fixtures/bar.js': barjs,
+    'http://rawgit.com/jtrussell/packerator/master/test/fixtures/bar.css': barcss,
+    'https://rawgit.com/jtrussell/packerator/master/test/fixtures/bar.css': barcss
+  };
+  if(map[url]) {
+    cb(null, {statusCode: 200}, map[url]);
+  } else {
+    cb(null, {statusCode: 404}, '');
+  }
+});
 
 describe('packerator', function() {
 
@@ -41,8 +59,9 @@ describe('packerator', function() {
     expect(actual).to.equal(barjs);
   });
 
-  it.skip('should inline remote JavaScript sources', function() {
-    expect(false).to.be.ok;
+  it('should inline remote JavaScript sources', function() {
+    var actual = $('#script-remote').html().trim();
+    expect(actual).to.equal(barjs);
   });
 
   it('should inline local stylesheets', function() {
