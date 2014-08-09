@@ -77,8 +77,9 @@ describe('packerator', function() {
     expect($('#style-local').attr('rel')).to.not.be.ok;
   });
 
-  it.skip('should inline remote stylesheets', function() {
-    expect(false).to.be.ok;
+  it('should inline remote stylesheets', function() {
+    var actual = $('#style-remote').html().trim();
+    expect(actual).to.equal(barcss);
   });
 
   it.skip('should datauri-ify local images', function() {
