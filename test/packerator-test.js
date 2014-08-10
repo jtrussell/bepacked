@@ -20,6 +20,7 @@ var request = require('request');
 // I don't want to reach out to the internets so let's stub `request.get`
 sinon.stub(request, 'get', function(url, cb) {
   var map = {
+    'http://rawgit.com/jtrussell/packerator/master/test/fixtures/foo.html': testHtml,
     'http://rawgit.com/jtrussell/packerator/master/test/fixtures/bar.js': barjs,
     'https://rawgit.com/jtrussell/packerator/master/test/fixtures/bar.js': barjs,
     'http://rawgit.com/jtrussell/packerator/master/test/fixtures/bar.css': barcss,
@@ -28,7 +29,7 @@ sinon.stub(request, 'get', function(url, cb) {
   if(map[url]) {
     cb(null, {statusCode: 200}, map[url]);
   } else {
-    cb(null, {statusCode: 404}, '');
+    cb(null, {statusCode: 404}, 'FROWN TOWN');
   }
 });
 
@@ -48,6 +49,10 @@ describe('packerator', function() {
   it('should not generate an error', function() {
     expect(err).to.not.be.ok;
     expect(packedHtml).to.be.ok;
+  });
+
+  it.skip('should return a promise', function() {
+    expect(false).to.be.ok;
   });
 
   it('should remove src attributes from scripts', function() {
@@ -95,10 +100,6 @@ describe('packerator', function() {
   });
 
   it.skip('should datauri-ify images in inline styles', function() {
-    expect(false).to.be.ok;
-  });
-
-  it.skip('should have a streaming interface', function() {
     expect(false).to.be.ok;
   });
 
