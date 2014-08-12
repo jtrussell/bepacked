@@ -13,7 +13,9 @@ var expect = require('chai').expect
 var testFile = __dirname + '/fixtures/foo.html'
   , testHtml = fs.readFileSync(testFile).toString()
   , barjs = fs.readFileSync(__dirname + '/fixtures/bar.js').toString().trim()
-  , barcss = fs.readFileSync(__dirname + '/fixtures/bar.css').toString().trim();
+  , barcss = fs.readFileSync(__dirname + '/fixtures/bar.css').toString().trim()
+  , barjpg = fs.readFileSync(__dirname + '/fixtures/bar.jpg').toString('base64').trim()
+  , barjpgDataUri = 'data:image/jpeg;base64,'+barjpg;
 
 var request = require('request');
 
@@ -87,12 +89,14 @@ describe('packerator', function() {
     expect(actual).to.equal(barcss);
   });
 
-  it.skip('should datauri-ify local images', function() {
-    expect(false).to.be.ok;
+  it('should datauri-ify local images', function() {
+    var actual = $('#img-local').attr('src');
+    expect(actual).to.equal(barjpgDataUri);
   });
 
-  it.skip('should datauri-ify remote images', function() {
-    expect(false).to.be.ok;
+  it('should datauri-ify remote images', function() {
+    var actual = $('#img-local').attr('src');
+    expect(actual).to.equal(barjpgDataUri);
   });
 
   it.skip('should datauri-ify images in stylesheets', function() {
