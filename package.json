@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/jtrussell/packerator",
   "dependencies": {
+    "bluebird": "^2.2.2",
     "cheerio": "^0.17.0",
     "lodash": "^2.4.1",
     "request": "^2.39.0"
