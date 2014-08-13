@@ -1,6 +1,10 @@
 /*global describe, it, beforeEach */
 /*jshint expr:true */
 
+/**
+ * @todo split html into isolated cases for each test
+ */
+
 'use strict';
 
 var fs = require('fs')
@@ -20,7 +24,11 @@ var testFile = __dirname + '/fixtures/foo.html'
 var request = require('request');
 
 // I don't want to reach out to the internets so let's stub `request.get`
-sinon.stub(request, 'get', function(url, cb) {
+sinon.stub(request, 'get', function(url, opts, cb) {
+  if(typeof cb === 'undefined') {
+    cb = opts;
+    opts = {};
+  }
   var map = {
     'http://rawgit.com/jtrussell/packerator/master/test/fixtures/foo.html': testHtml,
     'http://rawgit.com/jtrussell/packerator/master/test/fixtures/bar.js': barjs,
@@ -71,7 +79,7 @@ describe('packerator', function() {
     expect(actual).to.equal(barjs);
   });
 
-  it('should inline local stylesheets', function() {
+  it.only('should inline local stylesheets', function() {
     var actual = $('#style-local').html().trim();
     expect(actual).to.equal(barcss);
   });
@@ -89,12 +97,12 @@ describe('packerator', function() {
     expect(actual).to.equal(barcss);
   });
 
-  it('should datauri-ify local images', function() {
+  it.skip('should datauri-ify local images', function() {
     var actual = $('#img-local').attr('src');
     expect(actual).to.equal(barjpgDataUri);
   });
 
-  it('should datauri-ify remote images', function() {
+  it.skip('should datauri-ify remote images', function() {
     var actual = $('#img-local').attr('src');
     expect(actual).to.equal(barjpgDataUri);
   });
