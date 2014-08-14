@@ -45,54 +45,61 @@ sinon.stub(request, 'get', function(url, opts, cb) {
 
 describe('packerator', function() {
 
-  var $, err, packedHtml;
+  var opts = {cwd: __dirname + '/fixtures'};
 
-  beforeEach(function(done) {
-    packerator(testHtml, {cwd: __dirname + '/fixtures'}, function(e, html) {
-      err = e;
-      packedHtml = html;
-      $ = cheerio.load(packedHtml);
-      done();
-    });
-  });
-
-  it('should not generate an error', function() {
-    expect(err).to.not.be.ok;
-    expect(packedHtml).to.be.ok;
-  });
+  //beforeEach(function(done) {
+  //  packerator(testHtml, {cwd: __dirname + '/fixtures'}, function(e, html) {
+  //    err = e;
+  //    packedHtml = html;
+  //    $ = cheerio.load(packedHtml);
+  //    done();
+  //  });
+  //});
 
   it.skip('should return a promise', function() {
     expect(false).to.be.ok;
   });
 
-  it('should remove src attributes from scripts', function() {
+  it.skip('should remove src attributes from scripts', function() {
     expect($('#script-local').attr('src')).to.not.be.ok;
   });
 
-  it('should inline local JavaScript sources', function() {
-    var actual = $('#script-local').html().trim();
-    expect(actual).to.equal(barjs);
+  it('should inline local JavaScript sources', function(done) {
+    var testHtml = fs.readFileSync(__dirname + '/fixtures/local-script.html').toString();
+    packerator(testHtml, opts, function(err, html) {
+      expect(err).to.not.be.ok;
+      var $ = cheerio.load(html)
+        , actual = $('#script-local').html().trim();
+      expect(actual).to.equal(barjs);
+      done();
+    });
   });
 
-  it('should inline remote JavaScript sources', function() {
+  it.skip('should inline remote JavaScript sources', function() {
     var actual = $('#script-remote').html().trim();
     expect(actual).to.equal(barjs);
   });
 
-  it.only('should inline local stylesheets', function() {
-    var actual = $('#style-local').html().trim();
-    expect(actual).to.equal(barcss);
+  it('should inline local stylesheets', function(done) {
+    var testHtml = fs.readFileSync(__dirname + '/fixtures/local-style.html').toString();
+    packerator(testHtml, opts, function(err, html) {
+      expect(err).to.not.be.ok;
+      var $ = cheerio.load(html)
+        , actual = $('#style-local').html().trim();
+      expect(actual).to.equal(barcss);
+      done();
+    });
   });
 
-  it('should not leave href attributes on style tags', function() {
+  it.skip('should not leave href attributes on style tags', function() {
     expect($('#style-local').attr('href')).to.not.be.ok;
   });
 
-  it('should not leave rel attributes on style tags', function() {
+  it.skip('should not leave rel attributes on style tags', function() {
     expect($('#style-local').attr('rel')).to.not.be.ok;
   });
 
-  it('should inline remote stylesheets', function() {
+  it.skip('should inline remote stylesheets', function() {
     var actual = $('#style-remote').html().trim();
     expect(actual).to.equal(barcss);
   });
