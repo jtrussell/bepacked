@@ -1,14 +1,14 @@
 {
-  "name": "packerator",
+  "name": "bepacked",
   "version": "0.0.1",
   "description": "Pack external assets into your html",
-  "main": "lib/packerator.js",
+  "main": "lib/bepacked.js",
   "scripts": {
     "test": "gulp test"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jtrussell/packerator.git"
+    "url": "https://github.com/jtrussell/bepacked.git"
   },
   "keywords": [
     "inline",
@@ -18,9 +18,9 @@
   "author": "jtrussell <jus.russell@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jtrussell/packerator/issues"
+    "url": "https://github.com/jtrussell/bepacked/issues"
   },
-  "homepage": "https://github.com/jtrussell/packerator",
+  "homepage": "https://github.com/jtrussell/bepacked",
   "dependencies": {
     "bluebird": "^2.2.2",
     "cheerio": "^0.17.0",

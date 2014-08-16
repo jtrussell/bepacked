@@ -1,4 +1,4 @@
-# packerator
+# bepacked
 
 > Pack external assets into your html.
 
@@ -8,4 +8,4 @@
 
 ## License
 
-[MIT](https://raw.githubusercontent.com/jtrussell/packerator/master/LICENSE-MIT)
+[MIT](https://raw.githubusercontent.com/jtrussell/bepacked/master/LICENSE-MIT)

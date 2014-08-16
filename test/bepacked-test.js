@@ -8,7 +8,7 @@ var fs = require('fs')
 
 var expect = require('chai').expect
   , sinon = require('sinon')
-  , packerator = require('../');
+  , bepacked = require('../');
 
 var testFile = __dirname + '/fixtures/foo.html'
   , testHtml = fs.readFileSync(testFile).toString()
@@ -26,11 +26,11 @@ sinon.stub(request, 'get', function(url, opts, cb) {
     opts = {};
   }
   var map = {
-    'http://rawgit.com/jtrussell/packerator/master/test/fixtures/foo.html': testHtml,
-    'http://rawgit.com/jtrussell/packerator/master/test/fixtures/bar.js': barjs,
-    'https://rawgit.com/jtrussell/packerator/master/test/fixtures/bar.js': barjs,
-    'http://rawgit.com/jtrussell/packerator/master/test/fixtures/bar.css': barcss,
-    'https://rawgit.com/jtrussell/packerator/master/test/fixtures/bar.css': barcss
+    'http://rawgit.com/jtrussell/bepacked/master/test/fixtures/foo.html': testHtml,
+    'http://rawgit.com/jtrussell/bepacked/master/test/fixtures/bar.js': barjs,
+    'https://rawgit.com/jtrussell/bepacked/master/test/fixtures/bar.js': barjs,
+    'http://rawgit.com/jtrussell/bepacked/master/test/fixtures/bar.css': barcss,
+    'https://rawgit.com/jtrussell/bepacked/master/test/fixtures/bar.css': barcss
   };
   if(map[url]) {
     cb(null, {statusCode: 200}, map[url]);
@@ -39,7 +39,7 @@ sinon.stub(request, 'get', function(url, opts, cb) {
   }
 });
 
-describe('packerator', function() {
+describe('bepacked', function() {
 
   //it.skip('should return a promise', function() {
   //  expect(false).to.be.ok;
@@ -53,7 +53,7 @@ describe('packerator', function() {
         , opts = {cwd: __dirname + '/fixtures'};
 
       beforeEach(function(done) {
-        packerator(testHtml, opts, function(err, html) {
+        bepacked(testHtml, opts, function(err, html) {
           error = err;
           $el = cheerio.load(html)('#script-local');
           done();
@@ -80,7 +80,7 @@ describe('packerator', function() {
         , opts = {cwd: __dirname + '/fixtures'};
 
       beforeEach(function(done) {
-        packerator(testHtml, opts, function(err, html) {
+        bepacked(testHtml, opts, function(err, html) {
           error = err;
           $el = cheerio.load(html)('#script-remote');
           done();
@@ -107,7 +107,7 @@ describe('packerator', function() {
         , opts = {cwd: __dirname + '/fixtures'};
 
       beforeEach(function(done) {
-        packerator(testHtml, opts, function(err, html) {
+        bepacked(testHtml, opts, function(err, html) {
           error = err;
           $el = cheerio.load(html)('#style-local');
           done();
@@ -137,7 +137,7 @@ describe('packerator', function() {
         , opts = {cwd: __dirname + '/fixtures'};
 
       beforeEach(function(done) {
-        packerator(testHtml, opts, function(err, html) {
+        bepacked(testHtml, opts, function(err, html) {
           error = err;
           $el = cheerio.load(html)('#style-remote');
           done();
@@ -165,7 +165,7 @@ describe('packerator', function() {
     it('should not generate an error when there is nothing to do', function(done) {
       var testHtml = fs.readFileSync(__dirname + '/fixtures/remote-style.html').toString()
         , opts = {cwd: __dirname + '/fixtures'};
-      packerator(testHtml, opts, function(err, html) {
+      bepacked(testHtml, opts, function(err, html) {
         expect(err).to.not.be.ok;
         expect(html).to.be.ok;
         done();
