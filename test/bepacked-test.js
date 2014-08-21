@@ -14,7 +14,8 @@ var testFile = __dirname + '/fixtures/foo.html'
   , testHtml = fs.readFileSync(testFile).toString()
   , barjs = fs.readFileSync(__dirname + '/fixtures/bar.js').toString().trim()
   , barcss = fs.readFileSync(__dirname + '/fixtures/bar.css').toString().trim()
-  , barjpg = fs.readFileSync(__dirname + '/fixtures/bar.jpg').toString('base64').trim()
+  , barjpg = fs.readFileSync(__dirname + '/fixtures/bar.jpg')
+  , barjpg64 = fs.readFileSync(__dirname + '/fixtures/barjpg64.txt').toString().trim()
   , barjpgDataUri = 'data:image/jpeg;base64,'+barjpg;
 
 var request = require('request');
@@ -30,7 +31,8 @@ sinon.stub(request, 'get', function(url, opts, cb) {
     'http://rawgit.com/jtrussell/bepacked/master/test/fixtures/bar.js': barjs,
     'https://rawgit.com/jtrussell/bepacked/master/test/fixtures/bar.js': barjs,
     'http://rawgit.com/jtrussell/bepacked/master/test/fixtures/bar.css': barcss,
-    'https://rawgit.com/jtrussell/bepacked/master/test/fixtures/bar.css': barcss
+    'https://rawgit.com/jtrussell/bepacked/master/test/fixtures/bar.css': barcss,
+    'https://rawgit.com/jtrussell/bepacked/master/test/fixtures/bar.jpg': barjpg
   };
   if(map[url]) {
     cb(null, {statusCode: 200}, map[url]);
@@ -133,11 +135,10 @@ describe('bepacked', function() {
     });
 
     describe('remote styles', function() {
-      var testHtml = fs.readFileSync(__dirname + '/fixtures/remote-style.html').toString()
-        , opts = {cwd: __dirname + '/fixtures'};
+      var testHtml = fs.readFileSync(__dirname + '/fixtures/remote-style.html').toString();
 
       beforeEach(function(done) {
-        bepacked(testHtml, opts, function(err, html) {
+        bepacked(testHtml, function(err, html) {
           error = err;
           $el = cheerio.load(html)('#style-remote');
           done();
@@ -173,14 +174,28 @@ describe('bepacked', function() {
     });
 
     describe('images', function() {
-      it.skip('should datauri-ify local images', function() {
-        //var actual = $('#img-local').attr('src');
-        //expect(actual).to.equal(barjpgDataUri);
+      it.skip('should datauri-ify local images', function(done) {
+        var testHtml = fs.readFileSync(__dirname + '/fixtures/local-img.html').toString()
+          , opts = {cwd: __dirname + '/fixtures'};
+        bepacked(testHtml, opts, function(err, html) {
+          expect(err).to.not.be.ok;
+          $el = cheerio.load(html)('#img-local');
+          var actual = $el.attr('src');
+          expect(actual).to.equal(barjpgDataUri);
+          done();
+        });
       });
 
       it.skip('should datauri-ify remote images', function() {
-        //var actual = $('#img-local').attr('src');
-        //expect(actual).to.equal(barjpgDataUri);
+        var testHtml = fs.readFileSync(__dirname + '/fixtures/remote-img.html').toString()
+          , opts = {cwd: __dirname + '/fixtures'};
+        bepacked(testHtml, opts, function(err, html) {
+          expect(err).to.not.be.ok;
+          $el = cheerio.load(html)('#img-remote');
+          var actual = $el.attr('src');
+          expect(actual).to.equal(barjpgDataUri);
+          done();
+        });
       });
 
       it.skip('should datauri-ify images in stylesheets', function() {
