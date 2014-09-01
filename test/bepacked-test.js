@@ -16,7 +16,7 @@ var testFile = __dirname + '/fixtures/foo.html'
   , barcss = fs.readFileSync(__dirname + '/fixtures/bar.css').toString().trim()
   , barjpg = fs.readFileSync(__dirname + '/fixtures/bar.jpg')
   , barjpg64 = fs.readFileSync(__dirname + '/fixtures/barjpg64.txt').toString().trim()
-  , barjpgDataUri = 'data:image/jpeg;base64,'+barjpg;
+  , barjpgDataUri = 'data:image/jpeg;base64,'+barjpg64;
 
 var request = require('request');
 
@@ -32,6 +32,7 @@ sinon.stub(request, 'get', function(url, opts, cb) {
     'https://rawgit.com/jtrussell/bepacked/master/test/fixtures/bar.js': barjs,
     'http://rawgit.com/jtrussell/bepacked/master/test/fixtures/bar.css': barcss,
     'https://rawgit.com/jtrussell/bepacked/master/test/fixtures/bar.css': barcss,
+    'http://rawgit.com/jtrussell/bepacked/master/test/fixtures/bar.jpg': barjpg,
     'https://rawgit.com/jtrussell/bepacked/master/test/fixtures/bar.jpg': barjpg
   };
   if(map[url]) {
@@ -174,7 +175,7 @@ describe('bepacked', function() {
     });
 
     describe('images', function() {
-      it.skip('should datauri-ify local images', function(done) {
+      it('should datauri-ify local images', function(done) {
         var testHtml = fs.readFileSync(__dirname + '/fixtures/local-img.html').toString()
           , opts = {cwd: __dirname + '/fixtures'};
         bepacked(testHtml, opts, function(err, html) {
@@ -186,7 +187,7 @@ describe('bepacked', function() {
         });
       });
 
-      it.skip('should datauri-ify remote images', function() {
+      it('should datauri-ify remote images', function(done) {
         var testHtml = fs.readFileSync(__dirname + '/fixtures/remote-img.html').toString()
           , opts = {cwd: __dirname + '/fixtures'};
         bepacked(testHtml, opts, function(err, html) {
