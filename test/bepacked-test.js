@@ -199,11 +199,23 @@ describe('bepacked', function() {
         });
       });
 
-      it.skip('should datauri-ify images in stylesheets', function() {
-        expect(false).to.be.ok;
+      it('should datauri-ify images in inline styles', function(done) {
+        var testHtml = fs.readFileSync(__dirname + '/fixtures/local-style-image.html').toString()
+          , opts = {cwd: __dirname + '/fixtures'};
+        bepacked(testHtml, opts, function(err, html) {
+          expect(err).to.not.be.ok;
+          $el = cheerio.load(html)('#style-image-local');
+          var actual = $el.html()
+            .replace(/\r?\n/g, '')
+            .replace(/^[^(]+\(["']?/, '')
+            .replace(/["']?\)[^)]+$/, '')
+            .trim();
+          expect(actual).to.equal(barjpgDataUri);
+          done();
+        });
       });
 
-      it.skip('should datauri-ify images in inline styles', function() {
+      it.skip('should datauri-ify images in remote stylesheets', function() {
         expect(false).to.be.ok;
       });
 
