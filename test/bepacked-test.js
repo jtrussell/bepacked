@@ -216,6 +216,11 @@ describe('bepacked', function() {
       });
 
       it.skip('should datauri-ify images in remote stylesheets', function() {
+        /**
+         * @todo Note this should download images relative to the path of the
+         * css files they are attached to. I.e. if we link to an external css
+         * file images should be taken relative to that file's url.
+         */
         expect(false).to.be.ok;
       });
 
