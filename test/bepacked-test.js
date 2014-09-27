@@ -215,13 +215,20 @@ describe('bepacked', function() {
         });
       });
 
-      it.skip('should datauri-ify images in remote stylesheets', function() {
-        /**
-         * @todo Note this should download images relative to the path of the
-         * css files they are attached to. I.e. if we link to an external css
-         * file images should be taken relative to that file's url.
-         */
-        expect(false).to.be.ok;
+      it('should datauri-ify images in remote stylesheets', function() {
+        var testHtml = fs.readFileSync(__dirname + '/fixtures/remote-style-image.html').toString()
+          , opts = {cwd: __dirname + '/fixtures'};
+        bepacked(testHtml, opts, function(err, html) {
+          expect(err).to.not.be.ok;
+          $el = cheerio.load(html)('#style-image-remote');
+          var actual = $el.html()
+            .replace(/\r?\n/g, '')
+            .replace(/^[^(]+\(["']?/, '')
+            .replace(/["']?\)[^)]+$/, '')
+            .trim();
+          expect(actual).to.equal(barjpgDataUri);
+          done();
+        });
       });
 
       it.skip('should not generte an error when there is nothing to do', function() {
