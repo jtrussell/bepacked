@@ -14,6 +14,7 @@ var testFile = __dirname + '/fixtures/foo.html'
   , testHtml = fs.readFileSync(testFile).toString()
   , barjs = fs.readFileSync(__dirname + '/fixtures/bar.js').toString().trim()
   , barcss = fs.readFileSync(__dirname + '/fixtures/bar.css').toString().trim()
+  , barimgcss = fs.readFileSync(__dirname + '/fixtures/bar-image.css').toString().trim()
   , barjpg = fs.readFileSync(__dirname + '/fixtures/bar.jpg')
   , barjpg64 = fs.readFileSync(__dirname + '/fixtures/barjpg64.txt').toString().trim()
   , barjpgDataUri = 'data:image/jpeg;base64,'+barjpg64;
@@ -32,6 +33,8 @@ sinon.stub(request, 'get', function(url, opts, cb) {
     'https://rawgit.com/jtrussell/bepacked/master/test/fixtures/bar.js': barjs,
     'http://rawgit.com/jtrussell/bepacked/master/test/fixtures/bar.css': barcss,
     'https://rawgit.com/jtrussell/bepacked/master/test/fixtures/bar.css': barcss,
+    'http://rawgit.com/jtrussell/bepacked/master/test/fixtures/bar-image.css': barimgcss,
+    'https://rawgit.com/jtrussell/bepacked/master/test/fixtures/bar-image.css': barimgcss,
     'http://rawgit.com/jtrussell/bepacked/master/test/fixtures/bar.jpg': barjpg,
     'https://rawgit.com/jtrussell/bepacked/master/test/fixtures/bar.jpg': barjpg
   };
@@ -215,7 +218,7 @@ describe('bepacked', function() {
         });
       });
 
-      it('should datauri-ify images in remote stylesheets', function() {
+      it('should datauri-ify images in remote stylesheets', function(done) {
         var testHtml = fs.readFileSync(__dirname + '/fixtures/remote-style-image.html').toString()
           , opts = {cwd: __dirname + '/fixtures'};
         bepacked(testHtml, opts, function(err, html) {
@@ -229,10 +232,6 @@ describe('bepacked', function() {
           expect(actual).to.equal(barjpgDataUri);
           done();
         });
-      });
-
-      it.skip('should not generte an error when there is nothing to do', function() {
-        expect(false).to.be.ok;
       });
     });
   });
