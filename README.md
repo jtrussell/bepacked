@@ -1,4 +1,4 @@
-# bepacked
+# bepacked (WIP)
 
 > Pack external assets into your html.
 
