@@ -1,4 +1,4 @@
-# bepacked (WIP)
+# bepacked (WIP) [![Build Status](https://travis-ci.org/jtrussell/bepacked.svg)](https://travis-ci.org/jtrussell/bepacked)
 
 > Pack external assets into your html.
 
