@@ -1,6 +1,6 @@
 {
   "name": "bepacked",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Pack external assets into your html",
   "main": "lib/bepacked.js",
   "scripts": {
